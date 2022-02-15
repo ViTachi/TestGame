@@ -4,39 +4,39 @@ public abstract class Trajectory
 {
     protected float moveProgress = 0;
     public float MoveProgress => moveProgress;
-    protected Transform transform;
-    public Transform Transform => transform;
+    //protected Transform transform;
+    //public Transform Transform => transform;
     protected Vector3 startPoint;
     protected Vector3 endPoint;
     public abstract Vector3 GetPoint(float normilizedDistance);
 
     public void SetMoveProgress(float moveProgress) { this.moveProgress = moveProgress; }
 
-    public Trajectory(Transform transform)
-    {
-        this.transform = transform;
-    }
+    //public Trajectory(Transform transform)
+    //{
+    //    this.transform = transform;
+    //}
 
     public void Move(float amount)
     {
         moveProgress += amount;
         moveProgress = Mathf.Clamp01(moveProgress);
-        transform.position = GetPoint(moveProgress);
+        //transform.position = GetPoint(moveProgress);
     }
 
-    public void MoveLocal(float amount)
-    {
-        moveProgress += amount;
-        moveProgress = Mathf.Clamp01(moveProgress);
-        transform.localPosition = GetPoint(moveProgress);
-    }
+    //public void MoveLocal(float amount)
+    //{
+    //    moveProgress += amount;
+    //    moveProgress = Mathf.Clamp01(moveProgress);
+    //    transform.localPosition = GetPoint(moveProgress);
+    //}
 }
 
 public class BezierTrajectory : Trajectory
 {
     private Vector3 anchor;
 
-    public BezierTrajectory(Transform transform, Vector3 startPoint, Vector3 anchor, Vector3 endPoint) : base(transform)
+    public BezierTrajectory(Vector3 startPoint, Vector3 anchor, Vector3 endPoint)
     {
         this.startPoint = startPoint;
         this.anchor = anchor;
@@ -53,7 +53,7 @@ public class BezierTrajectory : Trajectory
 
 public class LinearTrajectory : Trajectory
 {
-    public LinearTrajectory(Transform transform, Vector3 startPoint, Vector3 endPoint) : base(transform)
+    public LinearTrajectory(Vector3 startPoint, Vector3 endPoint)
     {
         this.startPoint = startPoint;
         this.endPoint = endPoint;

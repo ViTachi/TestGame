@@ -13,18 +13,16 @@ public class PlateThrower : MonoBehaviour
     [Space(10)]
     [SerializeField] private GameObject platePrefab;
 
-    public void ThrowPlate()
+    public Plate ThrowPlate()
     {
         Plate plate = Instantiate(platePrefab).GetComponent<Plate>();
         Vector3 anchorPosition = Vector3.Lerp(startPoint.position, endPoint.position, 0.5f) + Vector3.up * trajectorygHeight;
-        BezierTrajectory trajectory = new BezierTrajectory(plate.transform, startPoint.position, anchorPosition, endPoint.position);
+        Vector2 endPointOffset = Random.insideUnitCircle * endPointRandomization;
+        BezierTrajectory trajectory = new BezierTrajectory(startPoint.position,
+            anchorPosition, endPoint.position + new Vector3(endPointOffset.x, 0, endPointOffset.y));
+        plate.LaunchFly(trajectory, flyTime);
 
-
-        DOTween.To(() => trajectory.MoveProgress, (x) => trajectory.Move(x-trajectory.MoveProgress), 1f, flyTime)
-            .SetEase(Ease.Linear).OnComplete(() =>
-            {
-
-            });
+        return plate;
     }
 
     private void OnDrawGizmos()
@@ -35,7 +33,7 @@ public class PlateThrower : MonoBehaviour
         if (startPoint != null && endPoint != null)
         {
             Vector3 anchorPosition = Vector3.Lerp(startPoint.position, endPoint.position, 0.5f) + Vector3.up * trajectorygHeight;
-            BezierTrajectory trajectory = new BezierTrajectory(null, startPoint.position, anchorPosition, endPoint.position);
+            BezierTrajectory trajectory = new BezierTrajectory(startPoint.position, anchorPosition, endPoint.position);
 
             for (int i = 0; i < 51; i++)
             {
